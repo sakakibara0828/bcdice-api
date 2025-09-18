@@ -2,13 +2,14 @@
 
 require 'bcdice/game_system/SwordWorld2_0'
 require 'bcdice/arithmetic_evaluator'
-require 'bcdice/command/k_command_parser'
+require 'bcdice/command/parser'
 require 'bcdice/power_table'
 require 'bcdice/user_defined_dice_table'
 
 module BCDice
   module GameSystem
     class SwordWorld2_5 < SwordWorld2_0
+      
       # ゲームシステムの識別子
       ID = 'MySwordWorld2_5'
 
@@ -113,12 +114,17 @@ module BCDice
     get_abyss_curse_table
 
   when /\Ak/i
-    parser = BCDice::Command::KCommandParser.new(command)
-    return nil unless parser.valid?
+    parser = BCDice::Command::Parser.new(
+      /\Ak(?<power>\d+)(?<modifier>(?:[+-]\d+)*)@(?<critical>\d+)/i,
+      round_type: BCDice::RoundType::NORMAL
+    )
 
-    power = parser.power
-    critical = parser.critical
-    modifier = parser.modifier
+    cmd = parser.parse(command)
+    return nil unless cmd
+
+    power = cmd.named[:power].to_i
+    critical = cmd.named[:critical].to_i
+    modifier = cmd.named[:modifier].to_s.scan(/[+-]\d+/).map(&:to_i).sum
 
     table = BCDice::PowerTable.new(power)
     result = table.roll(critical, modifier, @randomizer)
@@ -129,7 +135,6 @@ module BCDice
     super(command)
   end
 end
-
       def rating_parser
         return RatingParser.new(version: :v2_5)
       end
