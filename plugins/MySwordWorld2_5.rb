@@ -22,7 +22,7 @@ module BCDice
       HELP_MESSAGE = <<~INFO_MESSAGE_TEXT
         自動的成功、成功、失敗、自動的失敗の自動判定を行います。
 
-      COMMAND_PATTERN = /k\d+(?:[+-]\d+)*@\d+/i
+      COMMAND_PATTERN = /k\d+(?:[+-]\d+)*(?:@\d+)?/i
 
         ・レーティング表　(Kx)
         　"Kキーナンバー+ボーナス"の形で記入します。
@@ -104,8 +104,8 @@ module BCDice
     power_list = Regexp.last_match.captures.map(&:to_i)
     druid_parser = Command::Parser.new(/dru\[\d+,\d+,\d+\]/i, round_type: BCDice::RoundType::CEIL)
 
-    cmd = druid_parser.parse(command)
-    unless cmd
+    cmd = parser.parse(command)
+unless cmd
   return "コマンド解析に失敗しました（形式: k1000+10@10）"
 end
 
