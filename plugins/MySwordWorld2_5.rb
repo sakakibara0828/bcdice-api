@@ -22,7 +22,7 @@ module BCDice
       HELP_MESSAGE = <<~INFO_MESSAGE_TEXT
         自動的成功、成功、失敗、自動的失敗の自動判定を行います。
 
-      COMMAND_PATTERN = /k\d+\+\d+@\d+/i
+      COMMAND_PATTERN = /k\d+(?:[+-]\d+)*@\d+/i
 
         ・レーティング表　(Kx)
         　"Kキーナンバー+ボーナス"の形で記入します。
@@ -96,7 +96,7 @@ module BCDice
         　アビスカース表を出すことができます。
       INFO_MESSAGE_TEXT
 
-      register_prefix('H?K', 'OHK', 'Gr', '2D6?@\d+', 'FT', 'TT', 'Dru', 'ABT')
+      register_prefix('k', 'H?K', 'OHK', 'Gr', '2D6?@\d+', 'FT', 'TT', 'Dru', 'ABT')
 
       def eval_game_system_specific_command(command)
   case command
