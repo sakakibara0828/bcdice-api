@@ -6,12 +6,13 @@ module BCDice
       SORT_KEY = 'かいそうそおとわあると2.5'
 
 def self.register_command_pattern
-  /\Ak.*@.*\z/i
+  /\Ak.*\z/i
 end
 
       register_prefix('k')
 
       def eval_game_system_specific_command(command)
+  return "DEBUG: 受け取ったコマンド → #{command}" if command.include?("debug")
         parser = BCDice::Command::Parser.new(
           /\Ak(?<power>\d+)(?<modifier>(?:[+-]\d+)*)@(?<critical>\d+)/i,
           round_type: BCDice::RoundType::NORMAL
