@@ -158,5 +158,3 @@ module BCDice
     end
   end
 end
-
-BCDice::GAME_SYSTEMS["MySwordWorld2_5"] = BCDice::GameSystem::SwordWorld2_5
