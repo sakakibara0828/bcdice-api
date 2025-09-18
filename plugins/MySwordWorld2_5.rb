@@ -6,7 +6,7 @@ module BCDice
       SORT_KEY = 'かいそうそおとわあると2.5'
 
 def self.register_command_pattern
-  /\Ak.*\z/i
+  /.*/i
 end
 
       register_prefix('k')
