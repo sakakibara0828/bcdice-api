@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require 'bcdice/game_system/SwordWorld2_0'
+require 'bcdice/arithmetic_evaluator'
+require 'bcdice/command/k_command_parser'
+require 'bcdice/power_table'
+require 'bcdice/user_defined_dice_table'
 
 module BCDice
   module GameSystem
@@ -95,23 +99,36 @@ module BCDice
       register_prefix('H?K', 'OHK', 'Gr', '2D6?@\d+', 'FT', 'TT', 'Dru', 'ABT')
 
       def eval_game_system_specific_command(command)
-        case command
-        when /^dru\[(\d+),(\d+),(\d+)\]/i
-          power_list = Regexp.last_match.captures.map(&:to_i)
-          druid_parser = Command::Parser.new(/dru\[\d+,\d+,\d+\]/i, round_type: BCDice::RoundType::CEIL)
+  case command
+  when /^dru\[(\d+),(\d+),(\d+)\]/i
+    power_list = Regexp.last_match.captures.map(&:to_i)
+    druid_parser = Command::Parser.new(/dru\[\d+,\d+,\d+\]/i, round_type: BCDice::RoundType::CEIL)
 
-          cmd = druid_parser.parse(command)
-          unless cmd
-            return nil
-          end
+    cmd = druid_parser.parse(command)
+    return nil unless cmd
 
-          druid_dice(cmd, power_list)
-        when 'ABT'
-          get_abyss_curse_table
-        else
-          super(command)
-        end
-      end
+    druid_dice(cmd, power_list)
+
+  when 'ABT'
+    get_abyss_curse_table
+
+  when /\Ak/i
+    parser = BCDice::Command::KCommandParser.new(command)
+    return nil unless parser.valid?
+
+    power = parser.power
+    critical = parser.critical
+    modifier = parser.modifier
+
+    table = BCDice::PowerTable.new(power)
+    result = table.roll(critical, modifier, @randomizer)
+
+    result
+
+  else
+    super(command)
+  end
+end
 
       def rating_parser
         return RatingParser.new(version: :v2_5)
