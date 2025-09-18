@@ -1,6 +1,6 @@
 module BCDice
   module GameSystem
-    class SwordWorld2_5 < SwordWorld2_0
+    class SwordWorld2_5 < BCDice::GameSystem::Base
       ID = 'MySwordWorld2_5'
       NAME = '改造ソード・ワールド2.5'
       SORT_KEY = 'かいそうそおとわあると2.5'
