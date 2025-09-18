@@ -3,7 +3,6 @@
 require 'bcdice/game_system/SwordWorld2_0'
 require 'bcdice/arithmetic_evaluator'
 require 'bcdice/command/parser'
-require 'bcdice/power_table'
 require 'bcdice/user_defined_dice_table'
 
 module BCDice
@@ -126,15 +125,25 @@ module BCDice
     critical = cmd.named[:critical].to_i
     modifier = cmd.named[:modifier].to_s.scan(/[+-]\d+/).map(&:to_i).sum
 
-    table = BCDice::PowerTable.new(power)
-    result = table.roll(critical, modifier, @randomizer)
+    dice = @randomizer.roll_once(10)
+    is_critical = dice >= critical
+    base = is_critical ? power : (power / 2.0).floor
+    total = base + modifier
 
-    result
+    sequence = [
+      "(#{command})",
+      "出目: #{dice}",
+      is_critical ? "クリティカル！" : "通常威力",
+      "威力: #{base} + 修正: #{modifier} = 合計: #{total}"
+    ]
+
+    sequence.join(" ＞ ")
 
   else
     super(command)
   end
 end
+      
       def rating_parser
         return RatingParser.new(version: :v2_5)
       end
