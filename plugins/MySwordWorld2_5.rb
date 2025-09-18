@@ -5,9 +5,9 @@ module BCDice
       NAME = '改造ソード・ワールド2.5'
       SORT_KEY = 'かいそうそおとわあると2.5'
 
-      def self.register_command_pattern
-        /k\d+(?:[+-]\d+)*(?:@\d+)?/i
-      end
+def self.register_command_pattern
+  /\Ak.*@.*\z/i
+end
 
       register_prefix('k')
 
