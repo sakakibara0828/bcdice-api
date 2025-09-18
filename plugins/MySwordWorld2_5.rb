@@ -105,7 +105,11 @@ module BCDice
     druid_parser = Command::Parser.new(/dru\[\d+,\d+,\d+\]/i, round_type: BCDice::RoundType::CEIL)
 
     cmd = druid_parser.parse(command)
-    return nil unless cmd
+    unless cmd
+  return "コマンド解析に失敗しました（形式: k1000+10@10）"
+end
+
+
 
     druid_dice(cmd, power_list)
 
