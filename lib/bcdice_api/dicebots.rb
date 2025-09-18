@@ -19,8 +19,6 @@ module BCDiceAPI
   end
 
   load_plugins
-
-  BCDice::GAME_SYSTEMS["MySwordWorld2_5"] = BCDice::GameSystem::SwordWorld2_5
   
   DICEBOTS = BCDice.all_game_systems
                    .sort_by { |klass| klass::SORT_KEY }
