@@ -22,6 +22,10 @@ module BCDice
       HELP_MESSAGE = <<~INFO_MESSAGE_TEXT
         自動的成功、成功、失敗、自動的失敗の自動判定を行います。
 
+        def self.register_command_pattern
+  /k\d+(?:[+-]\d+)*(?:@\d+)?/i
+end
+
       COMMAND_PATTERN = /k\d+(?:[+-]\d+)*(?:@\d+)?/i
 
         ・レーティング表　(Kx)
