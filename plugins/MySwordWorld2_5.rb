@@ -19,10 +19,13 @@ module BCDice
       SORT_KEY = 'かいそうそおとわあると2.5'
 
       # ダイスボットの使い方
-      HELP_MESSAGE = <<~INFO_MESSAGE_TEXT
-        自動的成功、成功、失敗、自動的失敗の自動判定を行います。
+HELP_MESSAGE = <<~INFO_MESSAGE_TEXT
+  自動的成功、成功、失敗、自動的失敗の自動判定を行います。
+  （ここに説明文を続けてOK）
+INFO_MESSAGE_TEXT
 
-        def self.register_command_pattern
+# コマンドパターンを明示的に登録
+def self.register_command_pattern
   /k\d+(?:[+-]\d+)*(?:@\d+)?/i
 end
 
