@@ -104,12 +104,10 @@ module BCDice
     power_list = Regexp.last_match.captures.map(&:to_i)
     druid_parser = Command::Parser.new(/dru\[\d+,\d+,\d+\]/i, round_type: BCDice::RoundType::CEIL)
 
-    cmd = parser.parse(command)
-unless cmd
-  return "コマンド解析に失敗しました（形式: k1000+10@10）"
-end
-
-
+    cmd = druid_parser.parse(command)
+    unless cmd
+      return "Druコマンド解析に失敗しました"
+    end
 
     druid_dice(cmd, power_list)
 
@@ -123,7 +121,9 @@ end
     )
 
     cmd = parser.parse(command)
-    return nil unless cmd
+    unless cmd
+      return "コマンド解析に失敗しました（形式: k1000+10@10）"
+    end
 
     power = cmd.named[:power].to_i
     critical = cmd.named[:critical].to_i
